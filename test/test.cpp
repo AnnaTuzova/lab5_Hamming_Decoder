@@ -60,7 +60,7 @@ TEST(TestHamming74Decoder, ÑorrectionErrorTest)
 	Hamming74Decoder hamming_decode;
 
 	std::vector<uint8_t> syndroms = hamming_decode.SyndromeCalculation(input_data);
-	hamming_decode.ÑorrectionError(input_data, syndroms);
+	hamming_decode.CorrectionError(input_data, syndroms);
 
 	std::vector<uint8_t> actual_output_data = input_data;
 	ASSERT_EQ(actual_output_data, expected_output_data);
@@ -105,5 +105,4 @@ int main(int argc, char *argv[])
 {
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
-	return 0;
 }

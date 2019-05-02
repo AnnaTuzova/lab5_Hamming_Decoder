@@ -25,5 +25,5 @@ public:
 	std::vector<uint8_t> Decode(std::vector<uint8_t> &input_data) override;
 	void CheckInputDataOnCorrect(std::vector<uint8_t> &input_data);
 	std::vector<uint8_t> SyndromeCalculation(std::vector<uint8_t> &input_data);
-	void ÑorrectionError(std::vector<uint8_t> &input_data, std::vector<uint8_t> &syndrom_vector);
+	void CorrectionError(std::vector<uint8_t> &input_data, std::vector<uint8_t> &syndrom_vector);
 };

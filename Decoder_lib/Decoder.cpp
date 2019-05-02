@@ -10,7 +10,7 @@ std::vector<uint8_t> Hamming74Decoder::Decode(std::vector<uint8_t> &input_data)
 	std::vector<uint8_t> output_data(output_data_size);
 
 	std::vector<uint8_t> syndrom_vector = SyndromeCalculation(input_data);
-	ÑorrectionError(input_data, syndrom_vector);
+	CorrectionError(input_data, syndrom_vector);
 
 	int j = 0; //It is necessary that at each iteration of the i-loop the j variable is not reset.
 	for (int i = 0; i < input_data.size(); i += kNumOfInputElements)
@@ -62,7 +62,7 @@ std::vector<uint8_t> Hamming74Decoder::SyndromeCalculation(std::vector<uint8_t> 
 	return syndrom_vector;
 }
 
-void Hamming74Decoder::ÑorrectionError(std::vector<uint8_t> &input_data, std::vector<uint8_t> &syndrom_vector)
+void Hamming74Decoder::CorrectionError(std::vector<uint8_t> &input_data, std::vector<uint8_t> &syndrom_vector)
 {
 	int j = 0;
 	for (int i = 0; i < input_data.size(); i += kNumOfInputElements)
