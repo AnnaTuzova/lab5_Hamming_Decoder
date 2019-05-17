@@ -19,11 +19,12 @@ private:
 	const int kNumOfOutputElements = 4;
 	const int kNumOfSyndromElements = 3;
 
+	bool CheckInputDataOnCorrect(const std::vector<uint8_t> input_data) const;
+	std::vector<uint8_t> SyndromeCalculation(const std::vector<uint8_t> input_data) const;
+	void ÑorrectionError(std::vector<uint8_t> &input_data, const std::vector<uint8_t> syndrom_vector);
+
 public:
 	~Hamming74Decoder() {}
 
 	std::vector<uint8_t> Decode(std::vector<uint8_t> &input_data) override;
-	void CheckInputDataOnCorrect(std::vector<uint8_t> &input_data);
-	std::vector<uint8_t> SyndromeCalculation(std::vector<uint8_t> &input_data);
-	void CorrectionError(std::vector<uint8_t> &input_data, std::vector<uint8_t> &syndrom_vector);
 };

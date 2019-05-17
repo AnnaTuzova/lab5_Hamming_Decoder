@@ -12,61 +12,49 @@ TEST(TestHamming74Decoder, ExceptionTest)
 	ASSERT_THROW(hamming_decode.Decode(wrong_size_input_data), const char*);
 }
 
-TEST(TestHamming74Decoder, SyndromeTest)
-{
-	std::vector<uint8_t> input_data	{ 1,0,0,1,0,1,1,
-									  0,0,0,1,0,1,1,
-									  1,1,0,1,0,1,1, 
-									  1,0,1,1,0,1,1, 
-									  1,0,0,0,0,1,1, 
-									  1,0,0,1,1,1,1, 
-									  1,0,0,1,0,0,1, 
-									  1,0,0,1,0,1,0 };
 
-	std::vector<uint8_t> expected_syndroms{ 0,0,0,
-											1,1,0,
-											0,1,1,
-											1,1,1,
-											1,0,1,
-											1,0,0,
-											0,1,0,
-											0,0,1 };
+TEST(TestHamming74Decoder, DecodeTest)
+{
+	std::vector<uint8_t> input_data{ 0,0,0,0,0,0,0,
+									 0,0,0,1,1,0,1,
+									 0,0,1,0,1,1,1,
+									 0,0,1,1,0,1,0,
+									 0,1,0,0,0,1,1,
+									 0,1,0,1,1,1,0,
+									 0,1,1,0,1,0,0,
+									 0,1,1,1,0,0,1,
+									 1,0,0,0,1,1,0,
+									 1,0,0,1,0,1,1,
+								 	 1,0,1,0,0,0,1,
+									 1,0,1,1,1,0,0,
+									 1,1,0,0,1,0,1,
+									 1,1,0,1,0,0,0,
+									 1,1,1,0,0,1,0,
+									 1,1,1,1,1,1,1 };
+
+	std::vector<uint8_t> expected_output_data{ 0,0,0,0,
+											   0,0,0,1,
+											   0,0,1,0,
+											   0,0,1,1,
+											   0,1,0,0,
+											   0,1,0,1,
+											   0,1,1,0,
+											   0,1,1,1,
+											   1,0,0,0,
+											   1,0,0,1,
+										  	   1,0,1,0,
+											   1,0,1,1,
+											   1,1,0,0,
+											   1,1,0,1,
+											   1,1,1,0,
+											   1,1,1,1 };
 
 	Hamming74Decoder hamming_decode;
-	std::vector<uint8_t> actual_syndroms = hamming_decode.SyndromeCalculation(input_data);
-	ASSERT_EQ(actual_syndroms, expected_syndroms);
-}
-
-TEST(TestHamming74Decoder, ÑorrectionErrorTest)
-{
-	std::vector<uint8_t> input_data{ 1,0,0,1,0,1,1,
-									  0,0,0,1,0,1,1,
-									  1,1,0,1,0,1,1,
-									  1,0,1,1,0,1,1,
-									  1,0,0,0,0,1,1,
-									  1,0,0,1,1,1,1,
-									  1,0,0,1,0,0,1,
-									  1,0,0,1,0,1,0 };
-
-	std::vector<uint8_t> expected_output_data{ 1,0,0,1,0,1,1,
-											   1,0,0,1,0,1,1,
-											   1,0,0,1,0,1,1,
-											   1,0,0,1,0,1,1,
-											   1,0,0,1,0,1,1,
-											   1,0,0,1,0,1,1,
-											   1,0,0,1,0,1,1,
-											   1,0,0,1,0,1,1 };
-	
-	Hamming74Decoder hamming_decode;
-
-	std::vector<uint8_t> syndroms = hamming_decode.SyndromeCalculation(input_data);
-	hamming_decode.CorrectionError(input_data, syndroms);
-
-	std::vector<uint8_t> actual_output_data = input_data;
+	std::vector<uint8_t> actual_output_data = hamming_decode.Decode(input_data);
 	ASSERT_EQ(actual_output_data, expected_output_data);
 }
 
-TEST(TestHamming74Decoder, DecodeTest)
+TEST(TestHamming74Decoder, DecodeWithOneErrorTest)
 {
 	std::vector<uint8_t> input_data{  1,1,0,1,0,0,0,
 									  0,1,0,1,0,0,0,
@@ -84,11 +72,31 @@ TEST(TestHamming74Decoder, DecodeTest)
 									           1,1,0,1,
 									           1,1,0,1,
 									           1,1,0,1,
-									           1,1,0,1, };
+									           1,1,0,1 };
 
 	Hamming74Decoder hamming_decode;
 	std::vector<uint8_t> actual_output_data = hamming_decode.Decode(input_data);
 	ASSERT_EQ(actual_output_data, expected_output_data);
+}
+
+
+TEST(TestHamming74Decoder, DecodeWithTwoErrorTest)
+{
+	std::vector<uint8_t> input_data_with_two_errors{ 1,1,0,1,0,0,1 };
+
+	std::vector<uint8_t> expected_output_data{ 1,1,0,1 };
+
+	Hamming74Decoder hamming_decode;
+	std::vector<uint8_t> actual_output_data = hamming_decode.Decode(input_data_with_two_errors);
+
+	for (int i = 0; i < actual_output_data.size(); i++)
+	{
+		if (actual_output_data.at(i) == expected_output_data.at(i))
+			continue;
+		else
+			SUCCEED();
+	}
+	
 }
 
 TEST(TestHamming74Decoder, EmptyInputTest)
@@ -105,4 +113,5 @@ int main(int argc, char *argv[])
 {
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
+	return 0;
 }
