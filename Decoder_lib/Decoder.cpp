@@ -36,7 +36,7 @@ std::vector<uint8_t> Hamming74Decoder::Decode(std::vector<uint8_t> &input_data)
 	}
 }
 
-bool Hamming74Decoder::CheckInputDataOnCorrect(const std::vector<uint8_t> input_data) const
+bool Hamming74Decoder::CheckInputDataOnCorrect(const std::vector<uint8_t> &input_data) const
 {
 	int counter = 0;
 	for (int i = 0; i < input_data.size(); i++)
@@ -53,7 +53,7 @@ bool Hamming74Decoder::CheckInputDataOnCorrect(const std::vector<uint8_t> input_
 		return false;
 }
 
-std::vector<uint8_t> Hamming74Decoder::SyndromeCalculation(const std::vector<uint8_t> input_data) const
+std::vector<uint8_t> Hamming74Decoder::SyndromeCalculation(const std::vector<uint8_t> &input_data) const
 {
 	int syndrom_size = ((input_data.size() / 7) * 3);
 	std::vector<uint8_t> syndrom_vector(syndrom_size);
@@ -74,7 +74,7 @@ std::vector<uint8_t> Hamming74Decoder::SyndromeCalculation(const std::vector<uin
 	return syndrom_vector;
 }
 
-void Hamming74Decoder::ÑorrectionError(std::vector<uint8_t> &input_data, const std::vector<uint8_t> syndrom_vector)
+void Hamming74Decoder::ÑorrectionError(std::vector<uint8_t> &input_data, const std::vector<uint8_t> &syndrom_vector)
 {
 	int j = 0;
 	for (int i = 0; i < input_data.size(); i += kNumOfInputElements)
